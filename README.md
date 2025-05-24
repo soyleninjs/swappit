@@ -51,7 +51,7 @@ const Swappit = require('swappit');
 Incluye Swappit directamente desde un CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/swappit/dist/swappit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swappit/swappit.min.js"></script>
 ```
 
 ### Descarga directa
@@ -80,6 +80,8 @@ Incluye Swappit directamente desde un CDN:
 ```
 
 ## Ejemplos
+
+Todos los ejemplos están disponibles en el archivo `examples/index.html`. Puedes abrir este archivo en tu navegador para ver las demostraciones de Swappit en acción.
 
 ### Ejemplo 1: Actualización básica de contenido
 

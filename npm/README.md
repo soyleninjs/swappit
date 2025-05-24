@@ -51,7 +51,7 @@ const Swappit = require('swappit');
 Incluye Swappit directamente desde un CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/swappit/dist/swappit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swappit/swappit.min.js"></script>
 ```
 
 ### Descarga directa
