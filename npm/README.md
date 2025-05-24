@@ -81,6 +81,8 @@ Incluye Swappit directamente desde un CDN:
 
 ## Ejemplos
 
+Todos los ejemplos están disponibles en el archivo `examples/index.html`. Puedes abrir este archivo en tu navegador para ver las demostraciones de Swappit en acción.
+
 ### Ejemplo 1: Actualización básica de contenido
 
 Este ejemplo muestra cómo actualizar el contenido básico de una página.

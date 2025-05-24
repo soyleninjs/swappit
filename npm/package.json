@@ -1,0 +1,25 @@
+{
+  "name": "swappit",
+  "version": "1.0.0",
+  "description": "Biblioteca JavaScript ligera para actualizar dinámicamente el contenido de tu sitio web desde URLs externas con soporte para caché y actualización ordenada",
+  "main": "swappit.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soyleninjs/swappit.git"
+  },
+  "keywords": [
+    "javascript",
+    "ajax",
+    "content-update",
+    "dynamic-content",
+    "cache",
+    "dom-manipulation",
+    "html-update"
+  ],
+  "author": "soyleninjs <soyleninjs@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/soyleninjs/swappit/issues"
+  },
+  "homepage": "https://github.com/soyleninjs/swappit#readme"
+} 

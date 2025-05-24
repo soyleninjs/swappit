@@ -1,0 +1,153 @@
+/* Estilos para Swappit */
+
+/* Estilos para los bloques de código */
+pre[class*="language-"] {
+    border-radius: 0.5rem;
+    margin: 0;
+}
+
+.code-block {
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.language-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    border-bottom-left-radius: 0.25rem;
+    font-family: monospace;
+    color: #fff;
+}
+
+.language-label.javascript {
+    background-color: #f7df1e;
+    color: #000;
+}
+
+.language-label.html {
+    background-color: #e34c26;
+    color: #fff;
+}
+
+.language-label.css {
+    background-color: #264de4;
+    color: #fff;
+}
+
+.language-label.bash {
+    background-color: #3e4e50;
+    color: #fff;
+}
+
+/* Estilos para mostrar el cambio */
+.changed {
+    animation: highlight 1s ease;
+}
+
+@keyframes highlight {
+    0% { background-color: #fff3cd; }
+    100% { background-color: transparent; }
+}
+
+/* Estilos para los mensajes de log */
+.log-container {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    font-family: monospace;
+    font-size: 12px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+}
+
+.log-entry {
+    margin-bottom: 5px;
+    padding: 3px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.log-info { color: #3498db; }
+.log-success { color: #2ecc71; }
+.log-warning { color: #f39c12; }
+.log-error { color: #e74c3c; }
+
+/* Estilos para el menú móvil */
+#mobile-menu {
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobile-menu.hidden {
+    max-height: 0;
+    opacity: 0;
+}
+
+#mobile-menu:not(.hidden) {
+    max-height: 80vh; /* Limitar a 80% de la altura de la ventana */
+    overflow-y: auto; /* Permitir desplazamiento vertical */
+    opacity: 1;
+}
+
+.mobile-dropdown-content {
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.mobile-dropdown-content.hidden {
+    max-height: 0;
+    opacity: 0;
+}
+
+.mobile-dropdown-content:not(.hidden) {
+    max-height: 40vh; /* Limitar a 40% de la altura de la ventana */
+    overflow-y: auto; /* Permitir desplazamiento vertical */
+    opacity: 1;
+}
+
+.mobile-dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+.mobile-dropdown-icon.rotate-180 {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+    #mobile-menu-button {
+        display: flex;
+    }
+    
+    .mobile-dropdown button {
+        cursor: pointer;
+    }
+    
+    /* Estilos adicionales para mejorar la usabilidad en pantallas pequeñas */
+    #mobile-menu {
+        max-height: 0;
+        -webkit-overflow-scrolling: touch; /* Desplazamiento suave en iOS */
+    }
+    
+    #mobile-menu:not(.hidden) {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-height: 500px) {
+    #mobile-menu:not(.hidden) {
+        max-height: 85vh; /* Aumentar ligeramente en pantallas muy pequeñas */
+    }
+    
+    .mobile-dropdown-content:not(.hidden) {
+        max-height: 50vh; /* Aumentar para pantallas pequeñas */
+    }
+} 
