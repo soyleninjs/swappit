@@ -1,6 +1,6 @@
 # Swappit
 
-Biblioteca JavaScript ligera para actualizar dinámicamente el contenido de tu sitio web desde URLs externas con soporte para caché y actualización ordenada.
+Swappit es una librería JavaScript diseñada para facilitar la actualización parcial o total del contenido HTML de tu sitio web sin recargar la página. Su enfoque declarativo permite integrar funcionalidades modernas de navegación y experiencia de usuario sin la complejidad de un framework completo o arquitectura SPA. Ideal para proyectos que requieren velocidad, simplicidad y compatibilidad con plataformas. Swappit detecta y reemplaza dinámicamente elementos del DOM, manteniendo scripts de terceros funcionales y ofreciendo una navegación fluida y eficiente.
 
 ## Menú
 - [Swappit](#swappit)
@@ -24,6 +24,17 @@ Biblioteca JavaScript ligera para actualizar dinámicamente el contenido de tu s
   - [Patrones de uso](#patrones-de-uso)
     - [Identificadores únicos](#identificadores-únicos)
     - [Precarga de contenido](#precarga-de-contenido)
+  - [Configuración de páginas de destino](#configuración-de-páginas-de-destino)
+    - [Estructura HTML](#estructura-html)
+    - [Requisitos para la actualización](#requisitos-para-la-actualización)
+    - [Ejemplo práctico](#ejemplo-práctico)
+    - [Consejos para estructurar páginas de destino](#consejos-para-estructurar-páginas-de-destino)
+  - [SwappitButton](#swappitbutton)
+    - [Uso básico](#uso-básico-1)
+    - [Atributos disponibles](#atributos-disponibles)
+    - [Comportamiento](#comportamiento)
+    - [Ejemplo completo](#ejemplo-completo)
+    - [JavaScript (opcional)](#javascript-opcional)
   - [Solución de problemas](#solución-de-problemas)
 
 ## Instalación
@@ -41,6 +52,8 @@ Y luego importarlo en tu proyecto:
 ```javascript
 // Usando ES modules
 import Swappit from 'swappit';
+// o puedes hacer uso de un cdn sin instalarlo
+import Swappit from "https://esm.sh/swappit";
 
 // O usando CommonJS
 const Swappit = require('swappit');
@@ -74,14 +87,16 @@ Incluye Swappit directamente desde un CDN:
   // Crear una instancia de Swappit
   const swappit = new Swappit('mi-handle', true); // true para activar logs
 
-  // Actualizar contenido desde una URL
+  // Actualizar contenido desde una URL (usando caché por defecto)
   swappit.update('https://ejemplo.com/contenido.html');
+  
+  // Para forzar una nueva descarga, especificar false
+  // swappit.update('https://ejemplo.com/contenido.html', false);
 </script>
 ```
 
-## Ejemplos
 
-Todos los ejemplos están disponibles en el archivo `examples/index.html`. Puedes abrir este archivo en tu navegador para ver las demostraciones de Swappit en acción.
+## Ejemplos
 
 ### Ejemplo 1: Actualización básica de contenido
 
@@ -165,24 +180,20 @@ Este ejemplo muestra cómo precargar múltiples URLs y luego actualizarlas indiv
 // Crear una instancia de Swappit
 const appPrecarga = new Swappit('mi-app-precarga');
 
-// Precargar todo el contenido
-appPrecarga.preloadContents([
-  'header.html',
-  'main.html',
-  'footer.html'
-]);
+// Precargar contenido
+appPrecarga.preloadContents(['header.html', 'main.html', 'footer.html']);
 
 // Funciones para actualizar componentes individuales
 function actualizarHeader() {
-  appPrecarga.update('header.html');
+  appPrecarga.update('header.html'); // Usa caché por defecto
 }
 
 function actualizarMain() {
-  appPrecarga.update('main.html');
+  appPrecarga.update('main.html'); // Usa caché por defecto
 }
 
 function actualizarFooter() {
-  appPrecarga.update('footer.html');
+  appPrecarga.update('footer.html', false); // Forzar nueva descarga
 }
 ```
 
@@ -210,7 +221,7 @@ new Swappit(handle, log = false)
 
 | Método | Descripción |
 |--------|-------------|
-| `update(url)` | Actualiza el contenido desde una URL específica |
+| `update(url, loadFromCache = true)` | Actualiza el contenido desde una URL específica. El parámetro `loadFromCache` es `true` por defecto (usa caché). Solo necesitas especificar `false` cuando quieras forzar una nueva descarga |
 | `preloadContents(arrayUrls)` | Precarga el contenido de múltiples URLs para utilizarlo posteriormente |
 
 ### Métodos estáticos
@@ -219,13 +230,20 @@ new Swappit(handle, log = false)
 |--------|-------------|
 | `updateScriptByContent(arrayScriptsNodes)` | Actualiza scripts por contenido |
 | `updateScriptBySrc(matchUrl)` | Actualiza scripts por URL de origen |
+| `Swappit.instances` | Map que almacena todas las instancias de Swappit creadas, indexadas por su handle |
 
 ## Eventos
 
-Swappit emite un evento personalizado cuando se completa una actualización:
+Swappit emite eventos personalizados durante el ciclo de actualización:
 
 ```javascript
-window.addEventListener('mi-handle::update', () => {
+// Antes de la actualización
+window.addEventListener('swappit:mi-handle:beforeUpdate', () => {
+  console.log('Comenzando actualización');
+});
+
+// Después de la actualización
+window.addEventListener('swappit:mi-handle:afterUpdate', () => {
   console.log('Contenido actualizado');
 });
 ```
@@ -269,8 +287,141 @@ Para mejorar el rendimiento, puede precargar el contenido y luego actualizarlo c
 // Precargar contenido
 app.preloadContents(['header.html', 'main.html', 'footer.html']);
 
-// Más tarde, actualizar solo una parte
+// Más tarde, actualizar usando caché (comportamiento por defecto)
 app.update('header.html');
+
+// Para forzar una nueva descarga, especificar false
+app.update('footer.html', false);
+```
+
+## Configuración de páginas de destino
+
+Para que Swappit funcione correctamente, las páginas de destino (las que se cargan mediante fetch) deben configurarse siguiendo estas pautas:
+
+### Estructura HTML
+
+Las páginas de destino pueden ser documentos HTML completos normales. Swappit extraerá automáticamente solo los elementos que necesita actualizar.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página de destino</title>
+  <!-- Cualquier contenido en el head será ignorado -->
+</head>
+<body>
+  <!-- Solo los elementos con atributos data-[handle]-update serán utilizados -->
+  <div data-mi-app-update="header">Nuevo encabezado</div>
+  <div data-mi-app-update="content">Nuevo contenido</div>
+  
+  <!-- El resto del contenido será ignorado -->
+  <footer>Este contenido será ignorado si no tiene el atributo data-[handle]-update</footer>
+</body>
+</html>
+```
+
+### Requisitos para la actualización
+
+1. **Atributos data correspondientes**: Los elementos en la página de destino deben tener los mismos atributos `data-[handle]-update` con los mismos valores que los elementos que deseas actualizar en tu página principal.
+
+2. **Correspondencia por nombre**: Solo se actualizarán los elementos que tengan un elemento correspondiente en la página principal con el mismo valor en el atributo `data-[handle]-update`.
+
+### Ejemplo práctico
+
+**Página principal:**
+```html
+<div data-mi-app-update="header">Encabezado original</div>
+<div data-mi-app-update="sidebar">Barra lateral original</div>
+<div data-mi-app-update="content">Contenido original</div>
+```
+
+**Página de destino (nueva-pagina.html):**
+```html
+<!DOCTYPE html>
+<html>
+<body>
+  <div data-mi-app-update="header">Nuevo encabezado</div>
+  <div data-mi-app-update="content">Nuevo contenido</div>
+  <div data-mi-app-update="footer">Este elemento será ignorado</div>
+</body>
+</html>
+```
+
+**Resultado después de `app.update('nueva-pagina.html')`:**
+- El elemento "header" se actualizará con "Nuevo encabezado"
+- El elemento "content" se actualizará con "Nuevo contenido"
+- El elemento "sidebar" permanecerá sin cambios (no hay correspondencia en la página de destino)
+- El elemento "footer" de la página de destino será ignorado (no hay correspondencia en la página principal)
+
+### Consejos para estructurar páginas de destino
+
+- **Mantén consistencia**: Usa los mismos nombres de atributos `data-[handle]-update` en todas tus páginas
+- **Estructura modular**: Divide tu contenido en componentes lógicos que puedan actualizarse independientemente
+- **Orden de actualización**: Si necesitas un orden específico de actualización, usa atributos `data-[handle]-update-order`
+
+## SwappitButton
+
+Swappit incluye un custom element que facilita la integración con enlaces existentes para actualizar contenido sin recargar la página.
+
+### Uso básico
+
+```html
+<swappit-button data-handle="mi-app">
+  <a href="./mi-pagina.html">Ir a Mi Página</a>
+</swappit-button>
+```
+
+### Atributos disponibles
+
+| Atributo | Tipo | Descripción | Valor predeterminado |
+|----------|------|-------------|----------------------|
+| `data-handle` | string | Identificador de la instancia Swappit a utilizar (obligatorio) | N/A |
+| `data-log` | boolean | Activa/desactiva los logs para esta instancia | `false` |
+| `data-preload` | boolean | Precarga automáticamente el contenido del enlace | `true` |
+| `data-load-from-cache` | boolean | Si es `true` (predeterminado) usa la versión en caché. Solo es necesario especificar `false` para forzar una nueva descarga | `true` |
+
+### Comportamiento
+
+1. El componente debe contener un único elemento `<a>` con un atributo `href` válido
+2. Solo acepta rutas relativas internas (que empiecen con `./` o `/`)
+3. Intercepta los clics y utiliza Swappit para actualizar el contenido sin recargar la página
+4. Reutiliza instancias existentes de Swappit o crea una nueva si no existe
+
+### Ejemplo completo
+
+```html
+<!-- Elementos que se actualizarán -->
+<div data-swappit-button-update="header">Encabezado actual</div>
+<div data-swappit-button-update="content">Contenido actual</div>
+
+<!-- Menú de navegación con SwappitButton -->
+<nav>
+  <swappit-button data-handle="swappit-button" data-log="true">
+    <a href="./pagina1.html">Página 1</a>
+  </swappit-button>
+  
+  <swappit-button data-handle="swappit-button" data-preload="false">
+    <a href="./pagina2.html">Página 2</a>
+  </swappit-button>
+  
+  <swappit-button data-handle="swappit-button" data-load-from-cache="false">
+    <a href="./pagina3.html">Página 3 (Forzar nueva descarga)</a>
+  </swappit-button>
+</nav>
+```
+
+### JavaScript (opcional)
+
+No es necesario escribir JavaScript adicional para utilizar el componente, pero puede interactuar con la instancia de Swappit si lo desea:
+
+```javascript
+// Obtener acceso a la instancia compartida
+const swappitButton = Swappit.instances.get('swappit-button');
+
+// Escuchar eventos de actualización
+window.addEventListener('swappit:swappit-button:afterUpdate', () => {
+  console.log('Navegación completada');
+});
 ```
 
 ## Solución de problemas

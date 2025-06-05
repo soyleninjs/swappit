@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1, shrink-to-fit=no">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Swappit - Actualiza tu contenido sin recargar la página" />
+    <meta property="og:description" content="Swappit es una librería JavaScript que permite actualizar contenido HTML de forma declarativa sin recargar la página, mejorando la experiencia del usuario sin necesidad de usar un SPA." />
+    <meta property="og:image" content="https://swappit.soylenin.com/assets/og_image.webp" />
+    <meta property="og:url" content="https://swappit.soylenin.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Swappit" />
+    <meta property="og:locale" content="es_MX" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@soyleninjs" />
+    <meta name="twitter:creator" content="@soyleninjs" />
+    <meta name="twitter:title" content="Swappit - Actualiza tu contenido sin recargar la página" />
+    <meta name="twitter:description" content="Swappit es una librería JavaScript que permite actualizar contenido HTML de forma declarativa sin recargar la página, mejorando la experiencia del usuario sin necesidad de usar un SPA." />
+    <meta name="twitter:image" content="https://swappit.soylenin.com/assets/og_image.webp" />
+    <meta name="twitter:url" content="https://swappit.soylenin.com/" />
+
+    <!-- SEO -->
+    <meta name="description" content="Swappit es una librería JavaScript que permite actualizar contenido HTML de forma declarativa sin recargar la página, mejorando la experiencia del usuario sin necesidad de usar un SPA." />
+    <meta name="keywords" content="Swappit, plugin JavaScript, librería JavaScript, actualizar HTML sin recargar, AJAX declarativo, plugin ligero JS, navegación sin reload, actualización dinámica de contenido web">
+    <meta name="author" content="@soyleninjs" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
+
+    <!-- Title -->
     <title>Swappit - Actualización dinámica de contenido web</title>
-    <meta name="description" content="Swappit es una biblioteca JavaScript ligera para cargar y actualizar contenido dinámicamente desde URLs externas, con soporte para caché y actualización ordenada de elementos.">
+
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Prism.js CSS para resaltado de sintaxis -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
@@ -33,8 +65,12 @@
 <body class="bg-gray-50 font-sans text-gray-800">
     <header class="bg-primary text-white py-16 text-center">
         <div class="container mx-auto px-4 max-w-6xl">
-            <h1 class="text-5xl font-bold mb-5 tracking-tight">Swappit</h1>
-            <p class="text-xl max-w-3xl mx-auto mb-8">Biblioteca JavaScript ligera para actualizar dinámicamente el contenido de tu sitio web desde URLs externas con soporte para caché y actualización ordenada.</p>
+            <h1 class="text-6xl font-bold mb-5 tracking-tight flex justify-center items-center gap-2">
+                <img class="w-20 aspect-square" src="assets/logo-white.svg" alt="Swappit">
+                Swappit
+            </h1>
+            <p class="text-xl max-w-3xl mx-auto mb-8">Actualiza sin recargar, siente la fluidez, haz Swappit.</p>
+            <p class="text-m max-w-5xl mx-auto mb-8">Swappit es una librería JavaScript diseñada para facilitar la actualización parcial o total del contenido HTML de tu sitio web sin recargar la página. Su enfoque declarativo permite integrar funcionalidades modernas de navegación y experiencia de usuario sin la complejidad de un framework completo o arquitectura SPA. Ideal para proyectos que requieren velocidad, simplicidad y compatibilidad con plataformas. Swappit detecta y reemplaza dinámicamente elementos del DOM, manteniendo scripts de terceros funcionales y ofreciendo una navegación fluida y eficiente.</p>
             <div class="mb-6">
                 <a href="https://github.com/soyleninjs/swappit" target="_blank" rel="noopener noreferrer" class="inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-6 rounded-md hover:bg-white hover:text-primary transition-all duration-300 mr-4 mb-3">GitHub</a>
                 <a href="https://www.npmjs.com/package/swappit" target="_blank" rel="noopener noreferrer" class="inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-6 rounded-md hover:bg-white hover:text-primary transition-all duration-300 mb-3">npm</a>
@@ -78,6 +114,7 @@
                         </div>
                     </li>
                     <li><a href="#demos" class="text-gray-700 hover:text-primary transition-colors">Demos</a></li>
+                    <li><a href="#swappit-button-demo" class="text-gray-700 hover:text-primary transition-colors">Componentes</a></li>
                     <li><a href="https://github.com/soyleninjs/swappit" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-primary transition-colors">GitHub</a></li>
                 </ul>
             </div>
@@ -105,6 +142,7 @@
                     </li>
                     
                     <li><a href="#demos" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Demos</a></li>
+                    <li><a href="#swappit-button-demo" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Componentes</a></li>
                     <li><a href="https://github.com/soyleninjs/swappit" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">GitHub</a></li>
                 </ul>
             </div>
@@ -115,47 +153,93 @@
         <div class="container mx-auto px-4 max-w-6xl">
             <h2 class="text-4xl font-bold text-center text-dark mb-12">Características</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-                <div class="bg-white p-8 rounded-lg shadow-md text-center transition-transform duration-300 hover:-translate-y-2">
-                    <svg class="h-12 w-12 mx-auto text-primary mb-5" height="200" width="200" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.61 29.92a1 1 0 0 1-.6-1.07L12.83 17H8a1 1 0 0 1-1-1.23l3-13A1 1 0 0 1 11 2h10a1 1 0 0 1 .78.37a1 1 0 0 1 .2.85L20.25 11H25a1 1 0 0 1 .9.56a1 1 0 0 1-.11 1l-13 17A1 1 0 0 1 12 30a1.09 1.09 0 0 1-.39-.08ZM17.75 13l2-9H11.8L9.26 15h5.91l-1.59 10.28L23 13Z" fill="currentColor"/>
-                    </svg>
-                    <h3 class="text-2xl font-bold text-dark mb-4">Rápido y Ligero</h3>
-                    <p>Menos de 5KB minificado y gzipped. Sin dependencias externas.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary text-white p-3 rounded-lg mr-4">
+                            <svg class="h-6 w-6" height="200" width="200" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M11.61 29.92a1 1 0 0 1-.6-1.07L12.83 17H8a1 1 0 0 1-1-1.23l3-13A1 1 0 0 1 11 2h10a1 1 0 0 1 .78.37a1 1 0 0 1 .2.85L20.25 11H25a1 1 0 0 1 .9.56a1 1 0 0 1-.11 1l-13 17A1 1 0 0 1 12 30a1.09 1.09 0 0 1-.39-.08ZM17.75 13l2-9H11.8L9.26 15h5.91l-1.59 10.28L23 13Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Rápido y Ligero</h3>
+                    </div>
+                    <p>Menos de 5KB minificado y gzipped. Sin dependencias externas, haciendo que tu sitio web se mantenga veloz y eficiente.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-md text-center transition-transform duration-300 hover:-translate-y-2">
-                    <svg class="h-12 w-12 mx-auto text-primary mb-5" height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7 21H3v-2h4v-1H5a2 2 0 0 1-2-2v-1c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v4c0 1.11-.89 2-2 2m0-6H5v1h2M5 3h2a2 2 0 0 1 2 2v4c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2m0 6h2V5H5m7 0h10v2H12m0 12v-2h10v2m-10-8h10v2H12Z" fill="currentColor"/>
-                    </svg>
-                    <h3 class="text-2xl font-bold text-dark mb-4">Actualización Ordenada</h3>
-                    <p>Controla el orden en que se actualizan los elementos para una experiencia de usuario fluida.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-secondary text-white p-3 rounded-lg mr-4">
+                            <svg class="h-6 w-6" height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M7 21H3v-2h4v-1H5a2 2 0 0 1-2-2v-1c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v4c0 1.11-.89 2-2 2m0-6H5v1h2M5 3h2a2 2 0 0 1 2 2v4c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2m0 6h2V5H5m7 0h10v2H12m0 12v-2h10v2m-10-8h10v2H12Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Actualización Ordenada</h3>
+                    </div>
+                    <p>Controla el orden en que se actualizan los elementos para una experiencia de usuario fluida y profesional.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-md text-center transition-transform duration-300 hover:-translate-y-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-primary mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                    </svg>
-                    <h3 class="text-2xl font-bold text-dark mb-4">Caché Inteligente</h3>
-                    <p>Precarga y almacena en caché el contenido para una actualización instantánea cuando sea necesario.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-info text-white p-3 rounded-lg mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Caché Inteligente</h3>
+                    </div>
+                    <p>Precarga y almacena en caché el contenido para una actualización instantánea cuando sea necesario, mejorando significativamente el rendimiento.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-md text-center transition-transform duration-300 hover:-translate-y-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-primary mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                    <h3 class="text-2xl font-bold text-dark mb-4">Fácil Implementación</h3>
-                    <p>API sencilla y atributos de datos intuitivos para una integración rápida.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-warning text-white p-3 rounded-lg mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Fácil Implementación</h3>
+                    </div>
+                    <p>API sencilla y atributos intuitivos para una integración rápida en cualquier proyecto web sin complicaciones.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-md text-center transition-transform duration-300 hover:-translate-y-2">
-                    <svg class="h-12 w-12 mx-auto text-primary mb-5" height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.6 10.9c.1.1.2.1.4.1h7c.6 0 1-.4 1-1c0-.2 0-.3-.1-.4l-3.5-7c-.3-.5-.9-.7-1.4-.4c-.1.1-.3.2-.4.4l-3.5 7c-.2.4 0 1 .5 1.3zm3.9-5.7L19.4 9h-3.8l1.9-3.8zM6.5 2C4 2 2 4 2 6.5S4 11 6.5 11S11 9 11 6.5S9 2 6.5 2zm0 7C5.1 9 4 7.9 4 6.5S5.1 4 6.5 4S9 5.1 9 6.5S7.9 9 6.5 9zm4.2 4.3c-.4-.4-1-.4-1.4 0l-2.8 2.8l-2.8-2.8c-.4-.4-1-.4-1.4 0c-.4.4-.4 1 0 1.4l2.8 2.8l-2.8 2.8c-.4.4-.4 1 0 1.4s1 .4 1.4 0l2.8-2.8l2.8 2.8c.4.4 1 .4 1.4 0c.4-.4.4-1 0-1.4l-2.8-2.8l2.8-2.8c.4-.4.4-1 0-1.4zM21 13h-7c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h7c.6 0 1-.4 1-1v-7c0-.6-.4-1-1-1zm-1 7h-5v-5h5v5z" fill="currentColor"/>
-                    </svg>
-                    <h3 class="text-2xl font-bold text-dark mb-4">Personalizable</h3>
-                    <p>Configura múltiples instancias con diferentes manejadores para actualizar partes específicas de tu sitio.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary text-white p-3 rounded-lg mr-4">
+                            <svg class="h-6 w-6" height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M13.6 10.9c.1.1.2.1.4.1h7c.6 0 1-.4 1-1c0-.2 0-.3-.1-.4l-3.5-7c-.3-.5-.9-.7-1.4-.4c-.1.1-.3.2-.4.4l-3.5 7c-.2.4 0 1 .5 1.3zm3.9-5.7L19.4 9h-3.8l1.9-3.8zM6.5 2C4 2 2 4 2 6.5S4 11 6.5 11S11 9 11 6.5S9 2 6.5 2zm0 7C5.1 9 4 7.9 4 6.5S5.1 4 6.5 4S9 5.1 9 6.5S7.9 9 6.5 9zm4.2 4.3c-.4-.4-1-.4-1.4 0l-2.8 2.8l-2.8-2.8c-.4-.4-1-.4-1.4 0c-.4.4-.4 1 0 1.4l2.8 2.8l-2.8 2.8c-.4.4-.4 1 0 1.4s1 .4 1.4 0l2.8-2.8l2.8 2.8c.4.4 1 .4 1.4 0c.4-.4.4-1 0-1.4l-2.8-2.8l2.8-2.8c.4-.4.4-1 0-1.4zM21 13h-7c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h7c.6 0 1-.4 1-1v-7c0-.6-.4-1-1-1zm-1 7h-5v-5h5v5z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Personalizable</h3>
+                    </div>
+                    <p>Configura múltiples instancias con diferentes manejadores para actualizar partes específicas de tu sitio con total control.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-md text-center transition-transform duration-300 hover:-translate-y-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-primary mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <h3 class="text-2xl font-bold text-dark mb-4">Depuración Integrada</h3>
-                    <p>Sistema de logging con códigos de colores para facilitar el desarrollo y la depuración.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-secondary text-white p-3 rounded-lg mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Depuración Integrada</h3>
+                    </div>
+                    <p>Sistema de logging con códigos de colores para facilitar el desarrollo y la depuración durante todo el proceso.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-info text-white p-3 rounded-lg mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Componentes Web</h3>
+                    </div>
+                    <p>Incluye componentes web personalizados como SwappitButton para facilitar la actualización de contenido a través de enlaces existentes.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-warning text-white p-3 rounded-lg mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Seguro y Confiable</h3>
+                    </div>
+                    <p>Diseñado para funcionar con rutas internas relativas, evitando problemas de seguridad y asegurando un comportamiento predecible.</p>
                 </div>
             </div>
         </div>
@@ -164,11 +248,12 @@
     <section class="py-20 bg-white" id="installation">
         <div class="container mx-auto px-4 max-w-6xl">
             <h2 class="text-4xl font-bold text-center text-dark mb-12">Instalación</h2>
-            <p class="text-center mb-10">Comienza a utilizar Swappit en tu proyecto en segundos.</p>
+            <p class="text-center mb-10">Comienza a utilizar Swappit en tu proyecto en segundos con cualquiera de estas opciones.</p>
             
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-white border border-gray-100 rounded-lg shadow-md p-6 mb-8 hover:shadow-lg transition-shadow duration-300">
-                    <div class="flex items-center mb-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Opción 1: NPM -->
+                <div class="bg-white border border-gray-100 rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-6">
                         <div class="bg-warning text-white p-3 rounded-lg mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -176,39 +261,59 @@
                         </div>
                         <h3 class="text-2xl font-bold text-dark">NPM</h3>
                     </div>
-                    <div class="code-block">
-                        <span class="language-label bash">bash</span>
-                        <pre class="language-bash"><code>npm install swappit</code></pre>
+                    
+                    <div class="mb-6">
+                        <p class="mb-4">1. Instala el paquete en tu proyecto:</p>
+                        <div class="code-block">
+                            <span class="language-label bash">bash</span>
+                            <pre class="language-bash"><code>npm install swappit</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="mb-4">2. Importa y usa en tu código:</p>
+                        <div class="code-block">
+                            <span class="language-label javascript">javascript</span>
+                            <pre class="language-javascript"><code>// Usando ES modules
+import Swappit from 'swappit';
+// o puedes hacer uso de un cdn sin instalarlo
+import Swappit from "https://esm.sh/swappit";
+
+// O usando CommonJS
+const Swappit = require('swappit');</code></pre>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="bg-white border border-gray-100 rounded-lg shadow-md p-6 mb-8 hover:shadow-lg transition-shadow duration-300">
-                    <div class="flex items-center mb-4">
+                <!-- Opción 2: CDN o Descarga Directa -->
+                <div class="bg-white border border-gray-100 rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-6">
                         <div class="bg-info text-white p-3 rounded-lg mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                             </svg>
                         </div>
-                        <h3 class="text-2xl font-bold text-dark">CDN</h3>
+                        <h3 class="text-2xl font-bold text-dark">CDN o Descarga Directa</h3>
                     </div>
-                    <div class="code-block">
-                        <span class="language-label html">html</span>
-                        <pre class="language-html"><code>&lt;script src="https://cdn.jsdelivr.net/npm/swappit/swappit.min.js"&gt;&lt;/script&gt;</code></pre>
-                    </div>
-                </div>
-                
-                <div class="bg-white border border-gray-100 rounded-lg shadow-md p-6 mb-8 hover:shadow-lg transition-shadow duration-300">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-primary text-white p-3 rounded-lg mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
+                    
+                    <div class="mb-6">
+                        <p class="mb-4">Opción 1: Incluye desde CDN:</p>
+                        <div class="code-block">
+                            <span class="language-label html">html</span>
+                            <pre class="language-html"><code>&lt;script src="https://cdn.jsdelivr.net/npm/swappit/swappit.min.js"&gt;&lt;/script&gt;</code></pre>
                         </div>
-                        <h3 class="text-2xl font-bold text-dark">Descarga Directa</h3>
                     </div>
-                    <div class="code-block">
-                        <span class="language-label html">html</span>
-                        <pre class="language-html"><code>&lt;script src="ruta/a/swappit.min.js"&gt;&lt;/script&gt;</code></pre>
+                    
+                    <div class="mb-6">
+                        <p class="mb-4">Opción 2: Descarga directa:</p>
+                        <ol class="list-decimal ml-6 mb-4">
+                            <li>Descarga <code>swappit.min.js</code> desde el <a href="https://github.com/soyleninjs/swappit/releases" target="_blank" class="text-primary hover:underline">repositorio de GitHub</a></li>
+                            <li>Copia el archivo a tu proyecto e inclúyelo en tu HTML:</li>
+                        </ol>
+                        <div class="code-block">
+                            <span class="language-label html">html</span>
+                            <pre class="language-html"><code>&lt;script src="ruta/a/tu/proyecto/swappit.min.js"&gt;&lt;/script&gt;</code></pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -256,6 +361,78 @@ function actualizarContenidoBasico() {
 function restaurarContenidoBasico() {
     appBasico.update('./');
 }</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 mt-8">
+                <h3 class="text-2xl font-bold mb-4 text-dark flex items-center">
+                    <span class="bg-primary text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3 text-sm">3</span>
+                    Estructura de las páginas de destino
+                </h3>
+                <p class="mb-4">Para que Swappit funcione correctamente, las páginas a las que haces peticiones deben tener elementos con los mismos atributos data:</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-dark">Página principal:</h4>
+                        <div class="code-block">
+                            <span class="language-label html">html</span>
+                            <pre class="language-html"><code>&lt;div data-mi-app-update="header"&gt;
+    Encabezado original
+&lt;/div&gt;
+&lt;div data-mi-app-update="sidebar"&gt;
+    Barra lateral original
+&lt;/div&gt;
+&lt;div data-mi-app-update="content"&gt;
+    Contenido original
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-dark">Página de destino:</h4>
+                        <div class="code-block">
+                            <span class="language-label html">html</span>
+                            <pre class="language-html"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;div data-mi-app-update="header"&gt;
+        Nuevo encabezado
+    &lt;/div&gt;
+    &lt;div data-mi-app-update="content"&gt;
+        Nuevo contenido
+    &lt;/div&gt;
+    &lt;div data-mi-app-update="footer"&gt;
+        Este elemento será ignorado
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="text-lg font-bold mb-3 text-dark">Resultado después de actualizar:</h4>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>El elemento <code>header</code> se actualizará con "Nuevo encabezado"</li>
+                        <li>El elemento <code>content</code> se actualizará con "Nuevo contenido"</li>
+                        <li>El elemento <code>sidebar</code> permanecerá sin cambios (no tiene correspondencia en la página de destino)</li>
+                        <li>El elemento <code>footer</code> de la página de destino será ignorado (no tiene correspondencia en la página principal)</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                <strong>Importante:</strong> Solo se actualizarán los elementos que tengan correspondencia en ambas páginas. El resto del contenido permanecerá sin cambios.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -403,7 +580,7 @@ app.update('header.html');</code></pre>
                     </div>
                 </div>
 
-                <!-- Atributos de datos -->
+                <!-- Atributos -->
                 <div class="bg-white rounded-lg shadow-md p-6 mb-10 hover:shadow-lg transition-shadow duration-300">
                     <div class="flex items-center mb-6">
                         <div class="bg-info text-white p-3 rounded-lg mr-4">
@@ -411,7 +588,7 @@ app.update('header.html');</code></pre>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                             </svg>
                         </div>
-                        <h3 class="text-2xl font-bold text-dark">Atributos de datos</h3>
+                        <h3 class="text-2xl font-bold text-dark">Atributos</h3>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
@@ -537,7 +714,224 @@ app.update('header.html');</code></pre>
         </div>
     </section>
 
-    <section class="py-20 bg-white" id="demos">
+    <section class="py-20 bg-white" id="swappit-button-demo">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <h2 class="text-4xl font-bold text-center text-dark mb-12">SwappitButton</h2>
+            <p class="text-center text-xl mb-10">¿No quieres escribir JavaScript? Swappit incluye un custom element que facilita la integración con enlaces existentes para actualizar contenido sin recargar la página.</p>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Características del componente -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-light p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-primary text-white p-3 rounded-lg mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark">Uso Simple</h3>
+                        </div>
+                        <p>Solo necesitas envolver tus enlaces existentes con el componente y automáticamente capturará clics para actualizar contenido sin recargar la página.</p>
+                    </div>
+                    
+                    <div class="bg-light p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-secondary text-white p-3 rounded-lg mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark">Configurable</h3>
+                        </div>
+                        <p>Controla el comportamiento con atributos simples: activar logs, precargar contenido o forzar nuevas descargas cuando sea necesario.</p>
+                    </div>
+                    
+                    <div class="bg-light p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-info text-white p-3 rounded-lg mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark">Rutas Seguras</h3>
+                        </div>
+                        <p>Solo acepta rutas relativas internas para garantizar la seguridad y evitar problemas de origen cruzado.</p>
+                    </div>
+                    
+                    <div class="bg-light p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-warning text-white p-3 rounded-lg mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark">Reutilización de Instancias</h3>
+                        </div>
+                        <p>Comparte automáticamente la misma instancia de Swappit entre múltiples botones con el mismo handle, optimizando la memoria y rendimiento.</p>
+                    </div>
+                </div>
+                
+                <!-- Ejemplo de uso -->
+                <div class="bg-white rounded-lg shadow-md p-8 mb-8 hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+                    <h3 class="text-2xl font-bold mb-6 text-dark">Demostración</h3>
+                    
+                    <div class="border border-gray-200 p-5 rounded-md mb-5 bg-gray-50">
+                        <div data-swappit-button-update="header" class="p-3 mb-4 bg-white rounded-md">
+                            <h2 class="text-xl font-bold">Sección de navegación</h2>
+                            <p>Esta sección se actualizará sin recargar la página al hacer clic en los botones de abajo.</p>
+                        </div>
+                        
+                        <div data-swappit-button-update="content" class="p-3 bg-white rounded-md">
+                            <h2 class="text-xl font-bold">Contenido principal</h2>
+                            <p>El contenido se actualizará dependiendo del botón que selecciones.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <swappit-button data-handle="swappit-button" data-log="true" class="inline-block bg-primary text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors cursor-pointer">
+                            <a href="./examples/pagina1.html" class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                                Página 1
+                            </a>
+                        </swappit-button>
+                        
+                        <swappit-button data-handle="swappit-button" data-preload="false" class="inline-block bg-secondary text-white py-2 px-6 rounded-md hover:bg-green-600 transition-colors cursor-pointer">
+                            <a href="./examples/pagina2.html" class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                                Página 2
+                            </a>
+                        </swappit-button>
+                        
+                        <swappit-button data-handle="swappit-button" data-load-from-cache="false" class="inline-block bg-warning text-white py-2 px-6 rounded-md hover:bg-yellow-600 transition-colors cursor-pointer">
+                            <a href="./examples/pagina3.html" class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                                Página 3 (Forzar descarga)
+                            </a>
+                        </swappit-button>
+                    </div>
+                    
+                    <div class="log-container" id="log-swappit-button"></div>
+                    
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold mb-3 text-dark">Ejemplo completo:</h4>
+                        <div class="code-block mb-6">
+                            <span class="language-label html">html</span>
+                            <pre class="language-html"><code>&lt;!-- Elementos a actualizar --&gt;
+&lt;div data-swappit-button-update="header"&gt;
+    &lt;h2&gt;Sección de navegación&lt;/h2&gt;
+    &lt;p&gt;Esta sección se actualizará...&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div data-swappit-button-update="content"&gt;
+    &lt;h2&gt;Contenido principal&lt;/h2&gt;
+    &lt;p&gt;El contenido se actualizará...&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Menú de navegación con SwappitButton --&gt;
+&lt;nav&gt;
+  &lt;swappit-button data-handle="swappit-button" data-log="true"&gt;
+      &lt;a href="./pagina1.html"&gt;Página 1&lt;/a&gt;
+  &lt;/swappit-button&gt;
+  
+  &lt;swappit-button data-handle="swappit-button" data-preload="false"&gt;
+      &lt;a href="./pagina2.html"&gt;Página 2&lt;/a&gt;
+  &lt;/swappit-button&gt;
+  
+  &lt;swappit-button data-handle="swappit-button" data-load-from-cache="false"&gt;
+      &lt;a href="./pagina3.html"&gt;Página 3 (Forzar descarga)&lt;/a&gt;
+  &lt;/swappit-button&gt;
+&lt;/nav&gt;</code></pre>
+                        </div>
+                        
+                        <h4 class="text-lg font-semibold mt-8 mb-3 text-dark">JavaScript (opcional):</h4>
+                        <p class="mb-4">No es necesario escribir JavaScript adicional para utilizar el componente, pero puede interactuar con la instancia de Swappit si lo desea:</p>
+                        <div class="code-block">
+                            <span class="language-label javascript">javascript</span> 
+                            <pre class="language-javascript"><code>// Acceder a la instancia de Swappit asociada a los botones
+ const swappitButton = Swappit.instances.get("swappit-button");
+ 
+ // Escuchar eventos de actualización
+ window.addEventListener("swappit:swappit-button:afterUpdate", () => {
+   console.log("Navegación completada");
+ });</code></pre>
+                        </div>
+                        
+                        <h4 class="text-lg font-semibold mt-8 mb-3 text-dark">Uso básico</h4>
+                        <div class="code-block mb-6">
+                            <span class="language-label html">html</span>
+                            <pre class="language-html"><code>&lt;swappit-button data-handle="mi-app"&gt;
+  &lt;a href="./mi-pagina.html"&gt;Ir a Mi Página&lt;/a&gt;
+&lt;/swappit-button&gt;</code></pre>
+                        </div>
+                        
+                        <h4 class="text-lg font-semibold mt-8 mb-3 text-dark">Comportamiento</h4>
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+                            <ol class="list-decimal ml-6 space-y-2">
+                                <li>El componente debe contener un único elemento <code class="bg-gray-100 px-2 py-1 rounded-md text-primary font-mono">&lt;a&gt;</code> con un atributo <code>href</code> válido</li>
+                                <li>Solo acepta rutas relativas internas (que empiecen con <code>./</code> o <code>/</code>)</li>
+                                <li>Intercepta los clics y utiliza Swappit para actualizar el contenido sin recargar la página</li>
+                                <li>Reutiliza instancias existentes de Swappit o crea una nueva si no existe</li>
+                            </ol>
+                        </div>
+                        
+                        <h4 class="text-lg font-semibold mt-8 mb-3 text-dark">Atributos disponibles</h4>
+                        <p class="mb-4">El componente acepta los siguientes atributos para personalizar su comportamiento:</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="py-3 px-4 border border-gray-200 font-semibold">Atributo</th>
+                                        <th class="py-3 px-4 border border-gray-200 font-semibold">Tipo</th>
+                                        <th class="py-3 px-4 border border-gray-200 font-semibold">Valor predeterminado</th>
+                                        <th class="py-3 px-4 border border-gray-200 font-semibold">Obligatorio</th>
+                                        <th class="py-3 px-4 border border-gray-200 font-semibold">Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-3 px-4 border border-gray-200 font-mono text-sm"><code>data-handle</code></td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">string</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">N/A</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">Si</td>
+                                        <td class="py-3 px-4 border border-gray-200">Identificador único para la instancia de Swappit que se utilizará</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border border-gray-200 font-mono text-sm"><code>data-log</code></td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">boolean</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">false</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">No</td>
+                                        <td class="py-3 px-4 border border-gray-200">Activa/desactiva los logs para esta instancia</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border border-gray-200 font-mono text-sm"><code>data-preload</code></td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">boolean</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">true</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">No</td>
+                                        <td class="py-3 px-4 border border-gray-200">Precarga automáticamente el contenido del enlace</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border border-gray-200 font-mono text-sm"><code>data-load-from-cache</code></td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">boolean</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">true</td>
+                                        <td class="py-3 px-4 border border-gray-200 text-sm">No</td>
+                                        <td class="py-3 px-4 border border-gray-200">Si es <code>true</code> (predeterminado) usa la versión en caché. Solo es necesario especificar <code>false</code> para forzar una nueva descarga</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-light" id="demos">
         <div class="container mx-auto px-4 max-w-6xl">
             <h2 class="text-4xl font-bold text-center text-dark mb-12">Demos</h2>
             <p class="text-center mb-10">Explora las capacidades de Swappit con estos ejemplos prácticos e interactivos.</p>
@@ -783,7 +1177,7 @@ function restaurarPrecarga() {
         </div>
     </section>
 
-    <section class="py-20 bg-light">
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-4 max-w-6xl">
             <h2 class="text-4xl font-bold text-center text-dark mb-12">Documentación</h2>
             <p class="text-center mb-10">Consulta la documentación completa para aprovechar al máximo Swappit.</p>
@@ -814,7 +1208,7 @@ function restaurarPrecarga() {
 
     <footer class="bg-dark text-white py-12 text-center">
         <div class="container mx-auto px-4 max-w-6xl">
-            <p>Desarrollado con ❤️ por <a href="https://github.com/soyleninjs" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">soyleninjs</a></p>
+            <p>Desarrollado con ❤️ por <a href="https://github.com/soyleninjs" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">@soyleninjs</a></p>
             <div class="my-6 flex justify-center">
                 <a href="https://github.com/soyleninjs/swappit" target="_blank" rel="noopener noreferrer" class="mx-3 text-white hover:text-secondary transition-colors flex items-center justify-center">
                     <svg class="w-6 h-6" viewBox="0 0 432 416" xmlns="http://www.w3.org/2000/svg">
@@ -842,6 +1236,8 @@ function restaurarPrecarga() {
     
     <!-- Swappit y scripts personalizados -->
     <script src="js/swappit.min.js"></script>
+    <!-- <script src="js/swappit.js"></script> -->
+    <!-- <script src="js/swappit-button.js"></script> -->
     <script src="js/main.js"></script>
 </body>
 </html> 

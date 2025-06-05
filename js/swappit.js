@@ -1,9 +1,13 @@
 /**
  * To do:
- * Agregar actualizacion de scripts que esten dentro de un archivo externo
- * Agergar actualizacion de scripts dentro del tag <script>
- * Agregar configuracion para custom elements, el custom element sera el boton que tendra la url de la pagina que se va a cargar y precargara automaticamente, algo como:
- * <swappit-button data-url="/url-to-load" data-preload="true/false" data-always-load="true/false">contenido del boton...</swappit-button>
+ * atributos aria para accesibilidad
+ * añadir configuracion para reeiniciar scripts desde src e inline
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 
 
@@ -30,9 +34,6 @@ class Swappit {
 
     // Registrar esta instancia con su handle
     Swappit.instances.set(this.handle, this);
-
-    // Configurar eventName usando el handle
-    this.eventName = `${this.handle}::update`;
     this.contentsCache = {};
 
     this._logMessage(`Nueva instancia creada`, 'info');
@@ -54,28 +55,23 @@ class Swappit {
     console.log(prefix, `color: ${color}; font-weight: bold;`, message);
   }
 
-  async _getContent(url) {
-    // Si no hay URL, no hace nada
-    if (!url) {
+  _handleCustomEvent(name) {
+    const nameEvent = `swappit:${this.handle}:${name}`;
+    window.dispatchEvent(new window.Event(nameEvent));
+  }
+
+  async _getContent(url, loadFromCache = true) {
+    if (!url || (!url.startsWith("/") && !url.startsWith("./"))) {
+      this._logMessage(`La URL "${url}" no es válida. Solo se permiten rutas internas relativas.`, "error");
       return;
     }
 
-    if (!this.contentsCache[url]) {
+    if (!loadFromCache || !this.contentsCache[url]) {
       const request = await window.fetch(url);
       const html = await request.text();
       this.contentsCache[url] = new window.DOMParser().parseFromString(html, "text/html");
       this._logMessage(`Contenido precargado de ${url}`, 'success');
     }
-  }
-
-  async preloadContents(arrayUrls) {
-    if (!Array.isArray(arrayUrls) || arrayUrls.length === 0) {
-      this._logMessage(`preloadContents requiere un array de URLs no vacío`, 'warning');
-      return;
-    }
-
-    await Promise.all(arrayUrls.map((url) => this._getContent(url)));
-    this._logMessage(`Precarga completada para ${arrayUrls.length} URL(s)`, 'success');
   }
 
   _updateElements(html) {
@@ -105,7 +101,7 @@ class Swappit {
           noscript.textContent = noscript.innerHTML;
         });
 
-        // Manejo de scripts
+        // // Manejo de scripts
         // const scripts = clonedElement.querySelectorAll("script");
         // scripts.forEach((script) => {
         //   const newScript = document.createElement("script");
@@ -133,12 +129,24 @@ class Swappit {
     });
   }
 
+  // Métodos públicos
+  async preloadContents(arrayUrls) {
+    if (!Array.isArray(arrayUrls) || arrayUrls.length === 0) {
+      this._logMessage(`preloadContents requiere un array de URLs no vacío`, 'warning');
+      return;
+    }
+
+    await Promise.all(arrayUrls.map((url) => this._getContent(url)));
+    this._logMessage(`Precarga completada para ${arrayUrls.length} URL(s)`, 'success');
+  }
+
   // Método para actualizar contenido con una URL
-  async update(url) {
-    await this._getContent(url);
+  async update(url, loadFromCache = true) {
+    this._handleCustomEvent("beforeUpdate");
+    await this._getContent(url, loadFromCache);
     this._updateElements(this.contentsCache[url]);
     this._logMessage(`Elementos actualizados del contenido de ${url}`, 'success');
-    window.dispatchEvent(new window.Event(this.eventName));
+    this._handleCustomEvent("afterUpdate");
   }
 
   static updateScriptByContent(arrayScriptsNodes) {
