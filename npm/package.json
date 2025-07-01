@@ -1,0 +1,27 @@
+{
+  "name": "@soyleninjs/swappit",
+  "version": "1.0.0",
+  "description": "Swappit es una librería JavaScript diseñada para facilitar la actualización parcial o total del contenido HTML de tu sitio web sin recargar la página. Su enfoque declarativo permite integrar funcionalidades modernas de navegación y experiencia de usuario sin la complejidad de un framework completo o arquitectura SPA. Ideal para proyectos que requieren velocidad, simplicidad y compatibilidad con plataformas. Swappit detecta y reemplaza dinámicamente elementos del DOM, manteniendo scripts de terceros funcionales y ofreciendo una navegación fluida y eficiente.",
+  "main": "swappit.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soyleninjs/swappit.git"
+  },
+  "keywords": [
+    "swappit",
+    "@soyleninjs/swappit",
+    "javascript",
+    "ajax",
+    "content-update",
+    "dynamic-content",
+    "cache",
+    "dom-manipulation",
+    "html-update"
+  ],
+  "author": "soyleninjs <soyleninjs@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/soyleninjs/swappit/issues"
+  },
+  "homepage": "https://github.com/soyleninjs/swappit#readme"
+}
