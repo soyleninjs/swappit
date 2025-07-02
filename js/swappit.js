@@ -4,6 +4,7 @@
  * - añadir configuracion para reiniciar scripts desde src e inline
  * - arreglar mensaje de exito al precargar urls
  * - Fix documentacion homepage sobre los eventos
+ * - Agregar parametro para actualizar la url de la pagina
  */
 
 class Swappit {
@@ -50,9 +51,14 @@ class Swappit {
     console.log(prefix, `color: ${color}; font-weight: bold;`, message);
   }
 
-  _handleCustomEvent(name) {
+  _handleCustomEvent(name, url) {
     const nameEvent = `swappit:${this.handle}:${name}`;
-    window.dispatchEvent(new window.Event(nameEvent));
+    window.dispatchEvent(new window.CustomEvent(nameEvent, {
+      detail: {
+        handle: this.handle,
+        url: url
+      }
+    }));
   }
 
   async _getContent(url, loadFromCache = true) {
@@ -126,22 +132,23 @@ class Swappit {
 
   // Métodos públicos
   async preloadContents(arrayUrls) {
-    if (!Array.isArray(arrayUrls) || arrayUrls.length === 0) {
+    const cleanArrayUrls = [...new Set(arrayUrls)];
+    if (!Array.isArray(cleanArrayUrls) || cleanArrayUrls.length === 0) {
       this._logMessage(`preloadContents requiere un array de URLs no vacío`, 'warning');
       return;
     }
 
-    await Promise.all(arrayUrls.map((url) => this._getContent(url)));
-    this._logMessage(`Precarga completada para ${arrayUrls.length} URL(s)`, 'success');
+    await Promise.all(cleanArrayUrls.map((url) => this._getContent(url)));
+    this._logMessage(`Precarga completada para ${cleanArrayUrls.length} URL(s)`, 'success');
   }
 
   // Método para actualizar contenido con una URL
   async update(url, loadFromCache = true) {
-    this._handleCustomEvent("beforeUpdate");
+    this._handleCustomEvent("beforeUpdate", url);
     await this._getContent(url, loadFromCache);
     this._updateElements(this.contentsCache[url]);
     this._logMessage(`Elementos actualizados del contenido de ${url}`, 'success');
-    this._handleCustomEvent("afterUpdate");
+    this._handleCustomEvent("afterUpdate", url);
   }
 
   static updateScriptByContent(arrayScriptsNodes) {
