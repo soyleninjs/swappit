@@ -1,0 +1,12 @@
+{
+  "name": "Swappit bundler",
+  "version": "1.0.0",
+  "description": "A light workflow bundler",
+  "main": "builder.mjs",
+  "keywords": [],
+  "author": "@soyleninjs",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "0.25.5"
+  }
+}

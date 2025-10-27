@@ -8,6 +8,9 @@ yarn.lock
 
 # Directorios de construcción
 /dist
+/tests
+CLAUDE.MD
+bun.lock
 
 # Archivos de entorno
 .env
