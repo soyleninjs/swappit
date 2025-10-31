@@ -268,7 +268,6 @@ class Swappit {
   }
 
   reinit(log = false, options = {}) {
-    this.contentsCache = {};
     this.log = log;
     this.options = {
       ...this.options,

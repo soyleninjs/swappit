@@ -1,6 +1,6 @@
 {
   "name": "@soyleninjs/swappit",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Swappit es una librería JavaScript ligera que permite actualizar parcial o totalmente el contenido HTML de tu sitio web sin recargar la página. Con un enfoque declarativo basado en atributos data personalizados, facilita la creación de experiencias de navegación modernas sin la complejidad de un framework completo o SPA.",
   "main": "swappit.min.js",
   "repository": {
