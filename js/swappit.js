@@ -1,40 +1,29 @@
 /**
  * To do:
  * - atributos aria para accesibilidad
- * - añadir configuracion para reiniciar scripts desde src e inline
- * - arreglar mensaje de exito al precargar urls
- * - Fix documentacion homepage ✅
- * - Agregar parametro para actualizar la url de la pagina ✅
- * - Remover prefetch automatico en swappit-button, se tiene que activara manualmente ✅
- * - Agregar option para que funcione con el History del navegador ✅
- * - Observador de nuevos links ✅
- * - agregar config para preload con instant ✅
- * - agregar config para preload con hover ✅
- * - Agregar sistema de Zero config, usando datas sobre <a> para evitar estructuras extras, con resyncronisacion automatica para nuevos elementos en el dom ✅
  */
 
 class Swappit {
   // Registro estático para almacenar los handles en uso
   static instances = new Map();
 
-  constructor(handle, log = false, options = {}) {
+  constructor(handle, options = {}) {
     // Verificar que se haya proporcionado un handle
     if (!handle) {
-      throw new Error("Swappit: Error - El parámetro handle es obligatorio");
+      throw new Error("Swappit: El parámetro handle es obligatorio");
     }
 
     // Comprobar si el handle ya está en uso
     if (Swappit.instances.has(handle)) {
       // Lanzar error si el handle ya está en uso
-      throw new Error(`Swappit: Error - El handle "${handle}" ya está en uso. Utilice un identificador diferente.`);
+      throw new Error(`Swappit: El handle "${handle}" ya está en uso. Utilice un identificador diferente.`);
     }
 
     // Usar el handle proporcionado
     this.handle = handle;
-    // Configurar el parámetro log
-    this.log = log;
 
     this.options = {
+      log: false, // true, false
       updateUrl: false, // true, false
       enableHistory: false, // true, false
       // Este preload sirve para colocar un default para los links que se capturen con el observer y ellos no tenga su propio preload
@@ -42,9 +31,27 @@ class Swappit {
       ...options
     };
 
+    // Si updateUrl y enableHistory están activados, se reemplaza el estado del historial con el estado actual
+    if (this.options.updateUrl && this.options.enableHistory) {
+      if (window.__swappitNavigationController) {
+        throw new Error("Swappit: Solo una instancia puede controlar el historial.");
+      }
+    
+      window.__swappitNavigationController = this;
+    
+      window.history.replaceState(
+        { swappit: true },
+        "",
+        window.location.href
+      );
+    }
+
     // Registrar esta instancia con su handle
     Swappit.instances.set(this.handle, this);
+    this.destroyed = false;
     this.contentsCache = {};
+    this.currentRequestId = 0;
+    this.pendingRequests = new Map();
 
     // Manejo de eventos
     this._handleHistoryUpdate();
@@ -54,7 +61,7 @@ class Swappit {
   }
 
   _logMessage(message, type = 'info') {
-    if (!this.log) return;
+    if (!this.options.log) return;
     
     const colors = {
       info: '#3498db',    // Azul
@@ -69,18 +76,42 @@ class Swappit {
     console.log(prefix, `color: ${color}; font-weight: bold;`, message);
   }
 
-  async _getContent(url, loadFromCache = true) {
+  async _getContent(url, useCache = true) {
+    if (this.destroyed) {
+      throw new Error("Swappit: La instancia fue destruida.");
+    }
+    
     if (!url || (!url.startsWith("/") && !url.startsWith("./"))) {
-      this._logMessage(`La URL "${url}" no es válida. Solo se permiten rutas internas relativas.`, "error");
+      throw new Error(`La URL "${url}" no es válida. Solo se permiten rutas internas relativas.`);
+    }
+  
+    if (useCache && this.contentsCache[url]) {
       return;
     }
-
-    if (!loadFromCache || !this.contentsCache[url]) {
-      const request = await window.fetch(url);
-      const html = await request.text();
-      this.contentsCache[url] = new window.DOMParser().parseFromString(html, "text/html");
-      this._logMessage(`Contenido precargado de ${url}`, 'success');
+  
+    if (this.pendingRequests.has(url)) {
+      return this.pendingRequests.get(url);
     }
+  
+    const requestPromise = (async () => {
+      try {
+        const request = await window.fetch(url);
+  
+        if (!request.ok) {
+          throw new Error(`HTTP ${request.status} - ${url}`);
+        }
+  
+        const html = await request.text();
+        this.contentsCache[url] = new window.DOMParser().parseFromString(html, "text/html");
+        this._logMessage(`Contenido precargado de ${url}`, "success");
+      } finally {
+        this.pendingRequests.delete(url);
+      }
+    })();
+  
+    this.pendingRequests.set(url, requestPromise);
+  
+    return requestPromise;
   }
 
   _updateDOM(html) {
@@ -90,51 +121,40 @@ class Swappit {
 
     $elementsToUpdateWithOrder.sort((itemA, itemB) => window.parseInt(itemA.getAttribute(`data-${this.handle}-update-order`)) - window.parseInt(itemB.getAttribute(`data-${this.handle}-update-order`)));
 
-    const $finalElementsOrderToUpdate = [...$elementsToUpdateWithoutOrder, ...$elementsToUpdateWithOrder];
+    const $finalElementsOrderToUpdate = [...$elementsToUpdateWithOrder, ...$elementsToUpdateWithoutOrder];
+
+    const updateRegions = new Map();
+    html.querySelectorAll(`[data-${this.handle}-update]`).forEach((node) => {
+      const key = node.getAttribute(`data-${this.handle}-update`);
+
+      if (updateRegions.has(key)) {
+        this._logMessage(
+          `Update region duplicada detectada: ${key}`,
+          "warning"
+        );
+      }
+
+      updateRegions.set(key, node);
+    });
 
     $finalElementsOrderToUpdate.forEach(($element) => {
-      const $elementName = $element.getAttribute(`data-${this.handle}-update`);
-      const $newElements = html.querySelectorAll(`[data-${this.handle}-update="${$elementName}"]`);
+      const key = $element.getAttribute(`data-${this.handle}-update`);
+      const $newElement = updateRegions.get(key);
 
-      $newElements.forEach(($newElement) => {
-        if ($newElement == null) {
-          $element.classList.add("hidden");
-          return;
-        }
+      if ($newElement == null) {
+        $element.classList.add("hidden");
+        return;
+      }
 
-        const clonedElement = $newElement.cloneNode(true);
-        
-        // Manejo de noscripts
-        const noscripts = clonedElement.querySelectorAll("noscript");
-        noscripts.forEach((noscript) => {
-          noscript.textContent = noscript.innerHTML;
-        });
-
-        // // Manejo de scripts
-        // const scripts = clonedElement.querySelectorAll("script");
-        // scripts.forEach((script) => {
-        //   const newScript = document.createElement("script");
-          
-        //   // Si el script tiene src, actualizamos la URL con timestamp
-        //   if (script.src) {
-        //     newScript.src = `${script.src}?timestamp=${new Date().getTime()}`;
-        //   } else {
-        //     // Si es código inline, copiamos el contenido
-        //     newScript.textContent = script.textContent;
-        //   }
-          
-        //   // Copiamos todos los atributos del script original
-        //   Array.from(script.attributes).forEach(attr => {
-        //     if (attr.name !== 'src') { // No copiamos src ya que lo manejamos arriba
-        //       newScript.setAttribute(attr.name, attr.value);
-        //     }
-        //   });
-          
-        //   script.replaceWith(newScript);
-        // });
-
-        $element.replaceWith(clonedElement);
+      const clonedElement = $newElement.cloneNode(true);
+      
+      // Manejo de noscripts
+      const noscripts = clonedElement.querySelectorAll("noscript");
+      noscripts.forEach((noscript) => {
+        noscript.textContent = noscript.innerHTML;
       });
+
+      $element.replaceWith(clonedElement);
     });
   }
 
@@ -152,59 +172,85 @@ class Swappit {
   _handleHistoryUpdate() {
     if (this.options.updateUrl && this.options.enableHistory) {
       // Limpiar listener antiguo si existía
-      if (window._swappitHistoryUpdate) {
-        window.removeEventListener("popstate", window._swappitHistoryUpdate);
+      if (this.historyUpdate) {
+        window.removeEventListener("popstate", this.historyUpdate);
       }
 
       // Handle Popstate
-      window._swappitHistoryUpdate = () => this._handleHistoryUpdateCallback();
-      window.addEventListener("popstate", window._swappitHistoryUpdate);
+      this.historyUpdate = (event) => this._handleHistoryUpdateCallback(event)
+      window.addEventListener("popstate", this.historyUpdate);
     }
   }
 
-  async _handleHistoryUpdateCallback() {
-    const url = window.location.pathname;
-    await this._getContent(url);
-    this._updateDOM(this.contentsCache[url]);
+  async _handleHistoryUpdateCallback(event) {
+    if (!event.state?.swappit) return;
+    const requestId = ++this.currentRequestId;
+    const url = window.location.pathname + window.location.search;
+    this._emitCustomEvent("historyUpdate:before", url);
+
+    try {
+      await this._getContent(url);
+  
+      if (requestId !== this.currentRequestId) {
+        return;
+      }
+
+      if (this.destroyed) return;
+  
+      this._updateDOM(this.contentsCache[url]);
+      this._emitCustomEvent("historyUpdate:after", url);
+    } catch(error) {
+      this._logMessage(error.message, "error");
+      this._emitCustomEvent("historyUpdate:error", url);
+    }
   }
 
   _handleLinksToPreload($links) {
     $links.forEach(($link) => {
-      const  { preload: preloadLink, loadFromCache: loadFromCacheLink } = $link.dataset;
+      const  { preload: preloadLink, useCache: useCacheLink } = $link.dataset;
       const url = $link.getAttribute(`href`)
       const preload = preloadLink || this.options.preload
-      const loadFromCache = loadFromCacheLink || true
-      
-      // Preload
-      if (preload === "instant") {
-        this._getContent(url);
-      }
-      else if (preload === "hover") {
-        // 1️⃣ Prefetch on hover (desktop)
-        $link.addEventListener('mouseenter', () => {
-          this._getContent(url);
+      const useCache = useCacheLink === undefined ? true : useCacheLink === "true";
+
+      const handlePreload = () => {
+        this._getContent(url).catch((error) => {
+          this._logMessage(error.message, "error");
         });
-  
-        // 2️⃣ Prefetch on touch (móvil)
-        $link.addEventListener('touchstart', () => {
-          this._getContent(url);
-        }, { passive: true });
       }
 
       // Limpiar listener antiguo si existía
       if ($link._clickListener) {
         $link.removeEventListener('click', $link._clickListener);
       }
+      if ($link._hoverListener) {
+        $link.removeEventListener('mouseenter', $link._hoverListener);
+      }
+      if ($link._touchListener) {
+        $link.removeEventListener('touchstart', $link._touchListener);
+      }
 
       // Handle Click
-      $link._clickListener = (event) => this._handleClickLink(event, url, loadFromCache);
+      $link._hoverListener = () => handlePreload();
+      $link._touchListener = () => handlePreload();
+      $link._clickListener = (event) => {
+        event.preventDefault();
+        this.update(url, useCache);
+      };
+      
+      // Preload
+      if (preload === "instant") {
+        handlePreload();
+      }
+      else if (preload === "hover") {
+        // 1️⃣ Prefetch on hover (desktop)
+        $link.addEventListener('mouseenter', $link._hoverListener);
+  
+        // 2️⃣ Prefetch on touch (móvil)
+        $link.addEventListener('touchstart', $link._touchListener, { passive: true });
+      }
+
       $link.addEventListener('click', $link._clickListener);
     });
-  }
-
-  _handleClickLink(event, url, loadFromCache) {
-    event.preventDefault();
-    this.update(url, loadFromCache);
   }
 
   _observeNode(node) {
@@ -239,36 +285,65 @@ class Swappit {
 
   // ---- API PUBLICA ----
   async preloadContents(arrayUrls) {
-    const cleanArrayUrls = [...new Set(arrayUrls)];
-    if (!Array.isArray(cleanArrayUrls) || cleanArrayUrls.length === 0) {
+    if (this.destroyed) {
+      throw new Error("Swappit: No se puede usar preloadContents() en una instancia destruida.");
+    }
+
+    if (!Array.isArray(arrayUrls) || arrayUrls.length === 0) {
       this._logMessage(`preloadContents requiere un array de URLs no vacío`, 'warning');
       return;
     }
 
-    await Promise.all(cleanArrayUrls.map((url) => this._getContent(url)));
-    this._logMessage(`Precarga completada para ${cleanArrayUrls.length} URL(s)`, 'success');
+    const cleanArrayUrls = [...new Set(arrayUrls)];
+    const results = await Promise.allSettled(cleanArrayUrls.map((url) => this._getContent(url)));
+    const success = results.filter(result => result.status === "fulfilled").length;
+    const failed = results.length - success;
+
+    this._logMessage(`Precarga completada: ${success} exitosas, ${failed} fallidas`, 'success');
   }
 
   // Método para actualizar contenido de una URL específica
-  async update(url, loadFromCache = true) {
-    this._emitCustomEvent("beforeUpdate", url);
-
-    if (this.options.updateUrl) {
-      if (this.options.enableHistory) {
-        window.history.pushState({}, "", url);
-      } else {
-        window.history.replaceState({}, "", url);
-      }
+  async update(url, useCache = true) {
+    if (this.destroyed) {
+      throw new Error("Swappit: No se puede usar update() en una instancia destruida.");
     }
 
-    await this._getContent(url, loadFromCache);
-    this._updateDOM(this.contentsCache[url]);
-    this._logMessage(`Elementos actualizados del contenido de ${url}`, 'success');
-    this._emitCustomEvent("afterUpdate", url);
+    const requestId = ++this.currentRequestId;
+    this._emitCustomEvent("update:before", url);
+
+    try {
+      await this._getContent(url, useCache);
+
+      if (this.options.updateUrl) {
+        const state = { swappit: true };
+  
+        if (this.options.enableHistory) {
+          window.history.pushState(state, "", url);
+        } else {
+          window.history.replaceState(state, "", url);
+        }
+      }
+  
+      if (requestId !== this.currentRequestId) {
+        return;
+      }
+
+      if (this.destroyed) return;
+  
+      this._updateDOM(this.contentsCache[url]);
+      this._logMessage(`Elementos actualizados del contenido de ${url}`, 'success');
+      this._emitCustomEvent("update:after", url);
+    } catch(error) {
+      this._logMessage(error.message, "error");
+      this._emitCustomEvent("update:error", url);
+    }
   }
 
-  reinit(log = false, options = {}) {
-    this.log = log;
+  reinit(options = {}) {
+    if (this.destroyed) {
+      throw new Error("Swappit: No se puede reiniciar una instancia destruida.");
+    }
+
     this.options = {
       ...this.options,
       ...options
@@ -277,6 +352,50 @@ class Swappit {
     this._observeDOM();
     this._logMessage(`Reinicio completado`, 'success');
     this._emitCustomEvent("reinit");
+  }
+
+  destroy() {
+    if (this.destroyed) return;
+    this.destroyed = true;
+    this.options = {
+      log: false,
+      updateUrl: false,
+      enableHistory: false,
+      preload: false
+    };
+    this.contentsCache = {};
+    this.currentRequestId++
+    this.pendingRequests.clear();
+
+    if (this.historyUpdate) {
+      window.removeEventListener("popstate", this.historyUpdate);
+      this.historyUpdate = null;
+    }
+
+    if (this.observerLinks) {
+      this.observerLinks.disconnect();
+      this.observerLinks = null;
+    }
+
+    const $links = document.querySelectorAll(`a[data-swappit-handle="${this.handle}"]`);
+    $links.forEach(($link) => {
+      if ($link._clickListener) {
+        $link.removeEventListener('click', $link._clickListener);
+      }
+      if ($link._hoverListener) {
+        $link.removeEventListener('mouseenter', $link._hoverListener);
+      }
+      if ($link._touchListener) {
+        $link.removeEventListener('touchstart', $link._touchListener);
+      }
+    });
+
+    if (window.__swappitNavigationController === this) {
+      delete window.__swappitNavigationController;
+    }
+
+    this._emitCustomEvent("destroy");
+    Swappit.instances.delete(this.handle);
   }
 
   static updateScriptByContent(arrayScriptsNodes) {
@@ -291,7 +410,8 @@ class Swappit {
     const scripts = document.querySelectorAll(`script[src*="${matchUrl}"]`);
     scripts.forEach((oldScript) => {
       const newScript = document.createElement("script");
-      newScript.src = `${oldScript.src}?timestamp=${new Date().getTime()}`;
+      const separator = oldScript.src.includes("?") ? "&" : "?";
+      newScript.src = `${oldScript.src}${separator}timestamp=${Date.now()}`;
       oldScript.replaceWith(newScript);
     });
   }
@@ -299,7 +419,3 @@ class Swappit {
 
 // Exportar para entornos de navegador
 window.Swappit = Swappit;
-
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports = Swappit;
-}

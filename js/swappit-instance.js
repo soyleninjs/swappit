@@ -10,30 +10,29 @@ class SwappitInstance extends HTMLElement {
     const log = this.hasAttribute("data-log");
     const updateUrl = this.hasAttribute("data-update-url");
     const enableHistory = this.hasAttribute("data-enable-history");
-    this.loadFromCache = this.hasAttribute("data-load-from-cache");
-    this.destroyAfterRemove = this.hasAttribute("data-destroy-after-remove");
-    const preload = this.dataset.preload || false;
+    const preloadValues = ["hover", "instant"];
+    const preload = preloadValues.includes(this.dataset.preload) ? this.dataset.preload : false;
+
+    if (!updateUrl && enableHistory) {
+      console.warn(`SwappitInstance [${this.handle}]: data-enable-history requiere data-update-url.`);
+    }
 
     if (Swappit.instances.has(this.handle)) {
       this.swappit = Swappit.instances.get(this.handle);
 
-      this.swappit.reinit(log, {
+      this.swappit.reinit({
+        log,
         updateUrl,
         enableHistory,
         preload
       });
     } else {
-      this.swappit = new Swappit(this.handle, log, {
+      this.swappit = new Swappit(this.handle, {
+        log,
         updateUrl,
         enableHistory,
         preload
       });
-    }
-  }
-
-  disconnectedCallback() {
-    if (this.destroyAfterRemove) {
-      Swappit.instances.delete(this.handle);
     }
   }
 }
