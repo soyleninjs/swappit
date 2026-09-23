@@ -399,10 +399,15 @@ class Swappit {
   }
 
   static updateScriptByContent(arrayScriptsNodes) {
-    arrayScriptsNodes.forEach((script) => {
+    arrayScriptsNodes.forEach((oldScript) => {
       const newScript = document.createElement("script");
-      newScript.textContent = script.textContent;
-      script.replaceWith(newScript);
+
+      oldScript.getAttributeNames().forEach(name => {
+        newScript.setAttribute(name, oldScript.getAttribute(name));
+      });
+
+      newScript.textContent = oldScript.textContent;
+      oldScript.replaceWith(newScript);
     });
   }
 
@@ -410,6 +415,11 @@ class Swappit {
     const scripts = document.querySelectorAll(`script[src*="${matchUrl}"]`);
     scripts.forEach((oldScript) => {
       const newScript = document.createElement("script");
+
+      oldScript.getAttributeNames().forEach(name => {
+        newScript.setAttribute(name, oldScript.getAttribute(name));
+      });
+
       const separator = oldScript.src.includes("?") ? "&" : "?";
       newScript.src = `${oldScript.src}${separator}timestamp=${Date.now()}`;
       oldScript.replaceWith(newScript);
